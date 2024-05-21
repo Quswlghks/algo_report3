@@ -142,8 +142,6 @@ int main() {
 
 				}
 			}
-			//make_route(reservation[reserve_check_number].source, reservation[reserve_check_number].destination, reservation[reserve_check_number].date);
-			//printf("경로 : \n");
 
 			seat_print(t, airport, arrive);
 			printf(" \n\t\t\t\t\t -> 좌석을 선택해주세요! \n\n");
@@ -217,7 +215,7 @@ int main() {
 				printf("\t\t\t\t\t┗");  //세번 째 줄
 				for (int i = 0; i < 30; i++) printf("━");
 				printf("┛\n\n");
-				reservation[reserve_check_number].reservation_number = reserve_check_number;
+				reservation[reserve_check_number].reservation_num = reserve_check_number;
 
 				array_RBTree[reserve_check_number] = reserve_check_number;
 				RBtree_insert(t, (void*)array_RBTree[reserve_check_number], compare_int);
@@ -247,10 +245,10 @@ int main() {
 				for (int i = 0; i < 28; i++) printf("━");
 				printf("┓\n");
 				printf("\t\t\t\t\t┃"); //두번째 줄
-				printf(" 예약 번호 : %d", reservation[check].reservation_number);
-				if (reservation[check].reservation_number >= 10 && reservation[check].reservation_number < 100)
+				printf(" 예약 번호 : %d", reservation[check].reservation_num);
+				if (reservation[check].reservation_num >= 10 && reservation[check].reservation_num < 100)
 					printf("             ┃ \n");
-				else if (reservation[check].reservation_number >= 100)
+				else if (reservation[check].reservation_num >= 100)
 					printf("             ┃ \n");
 				else
 					printf("              ┃ \n");
@@ -294,7 +292,7 @@ int main() {
 				int pathnum = shortest_path(reservation[check].source, reservation[check].destination, reservation[check].date);
 				printf("비행시간  : %d ", pathnum);
 				if (reservation[check].date >= 10)
-					printf("             ┃ \n");
+					printf("            ┃ \n");
 				else if (reservation[check].date < 10)
 					printf("             ┃ \n");
 				printf("\t\t\t\t\t┗");  //세번 째 줄
@@ -478,7 +476,7 @@ void random_reserve(RBtree t) {
 		reservation[reserve_check_number].source = (char)(start + 'a');
 		reservation[reserve_check_number].destination = (char)(arrive + 'a');
 		reservation[reserve_check_number].date = sdate + 1;
-		reservation[reserve_check_number].reservation_number = reserve_check_number;
+		reservation[reserve_check_number].reservation_num = reserve_check_number;
 		array_RBTree[reserve_check_number] = reserve_check_number;
 		RBtree_insert(t, (void*)array_RBTree[reserve_check_number], compare_int);
 		reserve_check_number++;

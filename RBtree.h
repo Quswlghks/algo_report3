@@ -10,7 +10,7 @@
 #pragma warning (disable : 4996)
 
 struct customer_info {
-	int reservation_number;
+	int reservation_num;
 	char name[10];
 	char source;
 	char destination;
@@ -86,8 +86,8 @@ int compare_int(void* left, void* right);
 void print_tree(RBtree t);
 void print_tree_helper(RBtree_node n, int step);
 
-int RBtree_height(struct RBtree_node_t* ptr); //³ôÀÌ
-int count_node(struct RBtree_node_t* ptr); //°³¼ö
+int RBtree_height(struct RBtree_node_t* ptr); 
+int count_node(struct RBtree_node_t* ptr); 
 int seatCheck(RBtree t, char start, char dest, int str, int num);
 
 #endif 

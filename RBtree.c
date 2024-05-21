@@ -105,21 +105,21 @@ node new_node(void* key, color node_color, node left, node right) {
 }
 
 node lookup_node(RBtree t, void* key, compare_func compare) {
-	node n = t->root;
-	while (n != NULL) {
-		int comp_result = compare(key, n->key);
+	node current = t->root;
+	while (current != NULL) {
+		int comp_result = compare(key, current->key);
 		if (comp_result == 0) {
-			return n;
+			return current;
 		}
 		else if (comp_result < 0) {
-			n = n->left;
+			current = current->left;
 		}
 		else {
 			assert(comp_result > 0);
-			n = n->right;
+			current = current->right;
 		}
 	}
-	return n;
+	return current;
 }
 
 void* RBtree_lookup(RBtree t, void* key, compare_func compare) {
@@ -170,34 +170,34 @@ void RBtree_insert(RBtree t, void* key, compare_func compare) {
 		t->root = inserted_node;
 	}
 	else {
-		node n = t->root;
+		node current = t->root;
 		while (1) {
-			int comp_result = compare(key, n->key);
+			int comp_result = compare(key, current->key);
 			if (comp_result == 0) {
 				free(inserted_node);
 				return;
 			}
 			else if (comp_result < 0) {
-				if (n->left == NULL) {
-					n->left = inserted_node;
+				if (current->left == NULL) {
+					current->left = inserted_node;
 					break;
 				}
 				else {
-					n = n->left;
+					current = current->left;
 				}
 			}
 			else {
 				assert(comp_result > 0);
-				if (n->right == NULL) {
-					n->right = inserted_node;
+				if (current->right == NULL) {
+					current->right = inserted_node;
 					break;
 				}
 				else {
-					n = n->right;
+					current = current->right;
 				}
 			}
 		}
-		inserted_node->parent = n;
+		inserted_node->parent = current;
 	}
 	insert_case1(t, inserted_node);
 	verify_properties(t);
@@ -418,17 +418,17 @@ void print_tree_helper(RBtree_node n, int step) {
 
 int RBtree_search_node(struct RBtree_node_t* tree, int value)
 {
-	RBtree_node tmp = tree;
+	RBtree_node current = tree;
 
-	while (tmp != NULL) {
-		if (tmp->key == value) break;
-		else if (tmp->key > value)
-			tmp = tmp->left;
+	while (current != NULL) {
+		if (current->key == value) break;
+		else if (current->key > value)
+			current = current->left;
 		else
-			tmp = tmp->right;
+			current = current->right;
 	}
 
-	return tmp;
+	return current;
 }
 
 
@@ -437,17 +437,14 @@ int RBtree_height(struct RBtree_node_t* ptr) {
 	if (!ptr)
 		return 0;
 	else {
-		int left_h = RBtree_height(ptr->left);
-		int right_h = RBtree_height(ptr->right);
-		return 1 + (left_h > right_h ? left_h : right_h);
+		int left_height = RBtree_height(ptr->left);
+		int right_height = RBtree_height(ptr->right);
+		return 1 + (left_height > right_height ? left_height : right_height);
 	}
 }
 
 
 int count_node(struct RBtree_node_t* ptr) {
-	int count_node_number = 0;
-
 	if (ptr == NULL) return 0;
-	count_node_number = 1 + count_node(ptr->left) + count_node(ptr->right);
-	return count_node_number;
+	return 1 + count_node(ptr->left) + count_node(ptr->right);
 }
