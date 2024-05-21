@@ -1,5 +1,5 @@
-#ifndef ADJlist_H
-#define ADJlist_H
+#ifndef AdjList_H
+#define AdjList_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@ int visited[26];
 int travel[30];
 int trav[30];
 int len;
-LinkedList Adjlist[50];
+LinkedList AdjList[50];
 
 int pathCheck(char random_path[100][3], int num);
 void random_City_Position(City* city);
@@ -46,17 +46,5 @@ void checkDestination(int start);
 int shortest_path(char start, char arrive, int date);
 void print_path(char start, char arrive);
 void print_time(int date);
-void make_ADJlist();
-
-
-
-
-
-
-
-
-
-
-
-
+void make_AdjList();
 #endif

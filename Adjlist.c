@@ -1,4 +1,4 @@
-#include "ADJlist.h"
+#include "AdjList.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -37,28 +37,28 @@ void insertNode(char start, char dest, int times) {
 		newNode->tm[i] = ttm;
 	}
 
-	cur = Adjlist[tstart].head->next;
-	if ((Adjlist[tstart].len == 0)) {
+	cur = AdjList[tstart].head->next;
+	if ((AdjList[tstart].len == 0)) {
 		newNode->next = cur;
-		Adjlist[tstart].head->next = newNode;
-		Adjlist[tstart].len++;
+		AdjList[tstart].head->next = newNode;
+		AdjList[tstart].len++;
 	}
 	else if (cur->data > newNode->data) {
 		newNode->next = cur;
-		Adjlist[tstart].head->next = newNode;
-		Adjlist[tstart].len++;
+		AdjList[tstart].head->next = newNode;
+		AdjList[tstart].len++;
 	}
 	else {
 		while (1) {
 			if (cur->next == NULL) {
 				cur->next = newNode;
-				Adjlist[tstart].len++;
+				AdjList[tstart].len++;
 				break;
 			}
 			else if (newNode->data < cur->next->data) {
 				newNode->next = cur->next;
 				cur->next = newNode;
-				Adjlist[tstart].len++;
+				AdjList[tstart].len++;
 				break;
 			}
 			else {
@@ -70,14 +70,14 @@ void insertNode(char start, char dest, int times) {
 
 void init_Node() {
 	for (int i = 0; i < 26; i++) {
-		Adjlist[i].head = (NODE*)malloc(sizeof(NODE));
-		Adjlist[i].head->next = NULL;
-		Adjlist[i].len = 0;
+		AdjList[i].head = (NODE*)malloc(sizeof(NODE));
+		AdjList[i].head->next = NULL;
+		AdjList[i].len = 0;
 	}
 }
 
 void PrintList(char start) {
-	printf("\t\t\t\t\t갈 수 있는 여행지: ");
+	printf("갈 수 있는 여행지: ");
 	memset(visited, 0, sizeof(visited));
 	checkDestination(start - 'a');
 	for (int i = 0; i < 26; i++) {
@@ -96,19 +96,19 @@ void PrintListTime(char city_name, int date_num) {
 	else k = 23;
 	NODE* cur;
 	int dec;
-	printf("\t\t\t\t\t┏");
+	printf("┏");
 	for (int i = 0; i < k; i++) printf("━");
 	printf("┓\n");
-	printf("\t\t\t\t\t┃ ");
+	printf("┃ ");
 	printf("<%c공항 %d일의 시간표>", city_name, date_num);
 	printf("  ┃ \n");
-	printf("\t\t\t\t\t┗");
+	printf("┗");
 	for (int i = 0; i < k; i++) printf("━");
 	printf("┛\n\n");
 
-	cur = Adjlist[i].head->next;
+	cur = AdjList[i].head->next;
 	while (!cur == NULL) {
-		printf("\t\t\t\t\t> %c -> %c %d시\n", city_name, cur->data, cur->tm[date_num]);
+		printf("> %c -> %c %d시\n", city_name, cur->data, cur->tm[date_num]);
 		cur = cur->next;
 	}
 	printf("\n");
@@ -116,7 +116,7 @@ void PrintListTime(char city_name, int date_num) {
 
 void checkDestination(int start) {
 	visited[start] = 1;
-	NODE* temp = Adjlist[start].head->next;
+	NODE* temp = AdjList[start].head->next;
 
 	while (temp != NULL) {
 		if (visited[temp->data - 'a'] == 0) {
@@ -155,7 +155,7 @@ int shortest_path_time(char start, char arrive, int date) {
 		if (count == 26)break;
 		current = min;
 		prev = dist[current];
-		cur = Adjlist[current].head->next;
+		cur = AdjList[current].head->next;
 		while (!cur == NULL) {
 			prev = dist[current];
 			int stime = cur->tm[date];
@@ -201,7 +201,7 @@ int shortest_path(char start, char arrive, int date) {
 		if (min == 26) break;
 		
 		graduated[min] = 1;
-		cur = Adjlist[min].head->next;
+		cur = AdjList[min].head->next;
 
 		while (!cur == NULL) {
 			if (graduated[cur->data - 'a'] == 0) {
@@ -229,7 +229,7 @@ void print_path(char start, char arrive) {
 		if (des == start - 'a') break;
 		des = travel[des];
 	}
-	printf("\t\t\t\t\t 경유 경로: ");
+	printf(" 경유 경로: ");
 	len = count - 1;
 	for (int i = count - 1; i >= 0; i--) {
 		if (i == 0) printf("%c ", trav[i] + 'a');
@@ -250,8 +250,8 @@ void print_time(int date) {
 	for (int i = len; i >= 1; i--) {
 		
 		NODE* cur;
-		printf("\n\t\t\t\t\t>>%c 공항\n\n", trav[i] + 'a');
-		cur = Adjlist[trav[i]].head->next;
+		printf("\n>>%c 공항\n\n", trav[i] + 'a');
+		cur = AdjList[trav[i]].head->next;
 		while (cur != NULL) {
 			if ((cur->data) - 'a' == trav[i - 1]) {
 				temp_sp = ceil((double)(cur->length) / 200);
@@ -271,7 +271,7 @@ void print_time(int date) {
 		if (his == 1) {
 			clock = temp;
 		
-			printf("\t\t\t\t\t12월 %d일 %d시 정각 출발\n", dat, clock);
+			printf("12월 %d일 %d시 정각 출발\n", dat, clock);
 			if (i == len) {
 				sdat = dat;
 				sclock = clock;
@@ -296,15 +296,15 @@ void print_time(int date) {
 			dat++;
 			clock = clock - 24;
 		}
-		printf("\t\t\t\t\t12월 %d일 %d시 정각 도착\n", dat, clock);
+		printf("12월 %d일 %d시 정각 도착\n", dat, clock);
 	}
-	printf("\n\n\t\t\t\t\t-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n\n");
-	printf("\t\t\t\t\t%c 출발: 12월 %d일 %d시\n\n", trav[len] + 'a', sdat, sclock);
-	printf("\t\t\t\t\t%c 도착: 12월 %d일 %d시\n\n", trav[0] + 'a', dat, clock);
-	printf("\t\t\t\t\t-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n\n");
+	printf("\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n\n");
+	printf("%c 출발: 12월 %d일 %d시\n\n", trav[len] + 'a', sdat, sclock);
+	printf("%c 도착: 12월 %d일 %d시\n\n", trav[0] + 'a', dat, clock);
+	printf("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n\n");
 }
 
-void make_ADJlist() {
+void make_AdjList() {
 	srand(time(NULL));
 	init_Node();
 	char random_path[100][3];

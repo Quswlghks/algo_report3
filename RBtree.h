@@ -25,7 +25,6 @@ int temp1[601];
 
 struct customer_info reservation[600];
 
-
 enum RBtree_node_color { RED, BLACK };
 
 typedef struct RBtree_node_t {
