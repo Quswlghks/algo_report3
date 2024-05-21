@@ -40,15 +40,16 @@ int main() {
 
 	int choose_number;
 
-	printf("***********************************************************************************************************************\n");
+	printf("***********************************\n");
 
 	printf("Red-Black tree height : %d \n", RBtree_height(t->root));
-	printf("Red-Black tree  count node : %d\n ", count_node(t->root));
+	printf("Red-Black tree  count node : %d\n", count_node(t->root));
+	print_tree(t);
 
 	while (1) {
 		printf("***********************************\n");
 		printf("    해당하는 숫자를 입력하세요!\n");
-		printf("\n    ---  여행지를 선택 : 1 ---\n");
+		printf("\n    ---  기차역를 선택 : 1 ---\n");
 		printf("\n     ---  예약 조회 : 2  --- \n");
 		printf("\n     ---  예약 취소 : 3  --- \n");
 		printf("\n     ---  종료   : -1  --- \n\n");
@@ -491,6 +492,7 @@ void random_reserve(RBtree t) {
 		reservation[reserve_check_number].date = sdate + 1;
 		reservation[reserve_check_number].reservation_num = reserve_check_number;
 		printf("%d번째 예약 -> 출발지(%c)-도착지(%c) 날짜 : %d\n", reserve_check_number+1, reservation[reserve_check_number].source, reservation[reserve_check_number].destination, reservation[reserve_check_number].date);
+		//print_time(reservation[reserve_check_number].date);
 		array_RBTree[reserve_check_number] = reserve_check_number;
 		RBtree_insert(t, (void*)array_RBTree[reserve_check_number], compare_int);
 		reserve_check_number++;

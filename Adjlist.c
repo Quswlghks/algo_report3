@@ -79,7 +79,7 @@ void init_Node() {
 }
 
 void PrintList(char start) {
-	printf("갈 수 있는 여행지: ");
+	printf("갈 수 있는 기차역: ");
 	memset(visited, 0, sizeof(visited));
 	checkDestination(start - 'a');
 	for (int i = 0; i < 26; i++) {
