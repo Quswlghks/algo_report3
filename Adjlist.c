@@ -16,51 +16,48 @@ int pathCheck(char random_path[100][3], int num) {
 }
 
 void random_City_Position(City* city) {
-
-
 	for (int i = 0; i < 26; i++) {
 		city[i].name = i + 'a';
 		city[i].pos_x = rand() % 2001 - 1000;
 		city[i].pos_y = rand() % 2001 - 1000;
 	}
 }
+
 void insertNode(char start, char dest, int times) {
 	int tstart = start - 'a';
 	int tdest = dest - 'a';
 	int ttm = 0;
-	NODE* cur, * Newnode;
-	Newnode = (NODE*)malloc(sizeof(NODE));
-	Newnode->length = (int)sqrt((pow(city[tstart].pos_x - city[tdest].pos_x, 2) + pow(city[tstart].pos_y - city[tdest].pos_y, 2)));
-	//Newnode->length = ;
-	Newnode->next = NULL;
-	Newnode->data = dest;
+	NODE* cur, * newNode;
+	newNode = (NODE*)malloc(sizeof(NODE));
+	newNode->length = (int)sqrt((pow(city[tstart].pos_x - city[tdest].pos_x, 2) + pow(city[tstart].pos_y - city[tdest].pos_y, 2)));
+	newNode->next = NULL;
+	newNode->data = dest;
 	for (int i = 0; i < 31; i++) {
-		ttm = rand() % 24; // 무작위 시간 
-		Newnode->tm[i] = ttm;
+		ttm = rand() % 24; 
+		newNode->tm[i] = ttm;
 	}
 
 	cur = Adjlist[tstart].head->next;
 	if ((Adjlist[tstart].len == 0)) {
-		Newnode->next = cur;
-		Adjlist[tstart].head->next = Newnode;
+		newNode->next = cur;
+		Adjlist[tstart].head->next = newNode;
 		Adjlist[tstart].len++;
 	}
-	else if (cur->data > Newnode->data) {
-		Newnode->next = cur;
-		Adjlist[tstart].head->next = Newnode;
+	else if (cur->data > newNode->data) {
+		newNode->next = cur;
+		Adjlist[tstart].head->next = newNode;
 		Adjlist[tstart].len++;
 	}
 	else {
 		while (1) {
-
 			if (cur->next == NULL) {
-				cur->next = Newnode;
+				cur->next = newNode;
 				Adjlist[tstart].len++;
 				break;
 			}
-			else if (Newnode->data < cur->next->data) {
-				Newnode->next = cur->next;
-				cur->next = Newnode;
+			else if (newNode->data < cur->next->data) {
+				newNode->next = cur->next;
+				cur->next = newNode;
 				Adjlist[tstart].len++;
 				break;
 			}
@@ -72,7 +69,6 @@ void insertNode(char start, char dest, int times) {
 }
 
 void init_Node() {
-
 	for (int i = 0; i < 26; i++) {
 		Adjlist[i].head = (NODE*)malloc(sizeof(NODE));
 		Adjlist[i].head->next = NULL;
@@ -100,13 +96,13 @@ void PrintListTime(char city_name, int date_num) {
 	else k = 23;
 	NODE* cur;
 	int dec;
-	printf("\t\t\t\t\t┏");  //첫번째 줄
+	printf("\t\t\t\t\t┏");
 	for (int i = 0; i < k; i++) printf("━");
-	printf("┓\n"); -
-		printf("\t\t\t\t\t┃ ");
+	printf("┓\n");
+	printf("\t\t\t\t\t┃ ");
 	printf("<%c공항 %d일의 시간표>", city_name, date_num);
 	printf("  ┃ \n");
-	printf("\t\t\t\t\t┗");  //세번 째 줄
+	printf("\t\t\t\t\t┗");
 	for (int i = 0; i < k; i++) printf("━");
 	printf("┛\n\n");
 
@@ -134,7 +130,6 @@ int shortest_path_time(char start, char arrive, int date) {
 	int graduated[30];
 	int dist[30];
 	int prev = 0;
-	//printf("%c\n", start);
 	for (int i = 0; i < 30; i++) {
 		graduated[i] = 0;
 		dist[i] = 1000000;
@@ -147,7 +142,6 @@ int shortest_path_time(char start, char arrive, int date) {
 		int swit = 0;
 		int count = 0;
 		prev = dist[current];
-		//printf("??:%d   %d\n", dist[current], dist[0]);
 		for (int i = 0; i < 26; i++) {
 			if (graduated[i] == 0 && swit == 0) {
 				min = i;
@@ -158,21 +152,14 @@ int shortest_path_time(char start, char arrive, int date) {
 			}
 			if (graduated[i] == 1) count++;
 		}
-		//printf("%d\n", min);
 		if (count == 26)break;
-		//sprintf("min: %d\n", min);
 		current = min;
 		prev = dist[current];
-		//printf("min: %d   %d\n", min, prev);
-		//최소값을 current로 만든다. 그리고 그 값을 prev로 저장 
 		cur = Adjlist[current].head->next;
 		while (!cur == NULL) {
 			prev = dist[current];
 			int stime = cur->tm[date];
-			int runing = ceil((cur->length) / 200);// 비행기로 이동시간 ,,	
-			//printf("<%c -> %c>\n", current + 'a', cur->data);
-			//printf("%c %d| ", cur->data, runing);
-			//printf("a)))))prev: %d dist: %d   %d\n", prev, dist[(cur->data)-'a'], graduated[cur->data - 'a']);
+			int runing = ceil((cur->length) / 200);
 			prev += runing;
 			if (prev > 1000000) {
 				dist[cur->data - 'a'] = prev - 1000000;
@@ -180,25 +167,17 @@ int shortest_path_time(char start, char arrive, int date) {
 			}
 			else if (dist[cur->data - 'a'] >= 1000000) dist[cur->data - 'a'] = prev;
 			else if (dist[cur->data - 'a'] > prev) {
-				//printf("here!\n");
 				dist[cur->data - 'a'] = prev;
-				//printf("inputed : %c -> %d\n", cur->data, prev);
 			}
-			//printf("b)))))prev: %d dist: %d   %d\n", prev, dist[(cur->data) - 'a'], graduated[cur->data - 'a']);
 			cur = cur->next;
-			//printf("%d\n", dist[10]);
 		}
 
 		graduated[current] = 1;
 	}
-	/*
-	for (int i = 0; i < 26; i++) {
-		printf("%c | %d\n", i+'a', dist[i]);
-	}
-	*/
 
 	return dist[arrive - 'a'];
 }
+
 int shortest_path(char start, char arrive, int date) {
 	int graduated[30];
 	int dist[30];
@@ -210,7 +189,6 @@ int shortest_path(char start, char arrive, int date) {
 	}
 	dist[start - 'a'] = 0;
 	dist[26] = 1000;
-	int count = 0;
 
 	while (1) {
 		int min = 26;
@@ -219,18 +197,15 @@ int shortest_path(char start, char arrive, int date) {
 			if (graduated[i] == 0 && dist[min] > dist[i]) {
 				min = i;
 			}
-
-			//printf("%d ? %d\n", dist[min], dist[i]);
 		}
 		if (min == 26) break;
-		//printf("%d min: %c\n", ++count ,min + 'a');
+		
 		graduated[min] = 1;
 		cur = Adjlist[min].head->next;
-		/* 길이 배열 중 최솟값 찾기 */
 
 		while (!cur == NULL) {
 			if (graduated[cur->data - 'a'] == 0) {
-				int runing = ceil((cur->length) / 200);// 비행기로 이동시간 ,,	
+				int runing = ceil((cur->length) / 200);
 				if (dist[cur->data - 'a'] > (dist[min] + runing)) {
 					dist[cur->data - 'a'] = (dist[min] + runing);
 					travel[cur->data - 'a'] = min;
@@ -240,32 +215,20 @@ int shortest_path(char start, char arrive, int date) {
 		}
 
 	}
-	/*
-	for (int i = 0; i < 26; i++) {
-		printf("%c | %d\n", i + 'a', dist[i]);
-	}
-	*/
+
 	return dist[arrive - 'a'];
 }
 
 
 
 void print_path(char start, char arrive) {
-	//printf("here\n");
-	/*
-	for (int i = 0; i < 26; i++) {
-		printf("%c | %c \n", i + 'a', travel[i] + 'a');
-	}
-	*/
 	int count = 0;
 	int des = arrive - 'a';
 	while (1) {
 		trav[count++] = des;
-		//printf("here!\n");
 		if (des == start - 'a') break;
 		des = travel[des];
 	}
-	//printf("count: %d", count);
 	printf("\t\t\t\t\t 경유 경로: ");
 	len = count - 1;
 	for (int i = count - 1; i >= 0; i--) {
@@ -279,7 +242,6 @@ void print_path(char start, char arrive) {
 void print_time(int date) {
 	int sdat=0, edat=0, sclock=0, eclock=0;
 	int dat = date;
-	//printf("len: %d\n", len);
 	int spend_time = 0;
 	int clock = 0;
 	int his = 0;
@@ -291,7 +253,6 @@ void print_time(int date) {
 		printf("\n\t\t\t\t\t>>%c 공항\n\n", trav[i] + 'a');
 		cur = Adjlist[trav[i]].head->next;
 		while (cur != NULL) {
-			//printf("here!\n");
 			if ((cur->data) - 'a' == trav[i - 1]) {
 				temp_sp = ceil((double)(cur->length) / 200);
 				
@@ -314,7 +275,6 @@ void print_time(int date) {
 			if (i == len) {
 				sdat = dat;
 				sclock = clock;
-			
 			}
 			clock += temp_sp;
 			spend_time += temp_sp;
@@ -324,25 +284,19 @@ void print_time(int date) {
 			if (temp <= clock) {
 				dat++;
 				spend_time += temp + 24 - clock;
-				
-			
 			}
 			else {
-				
 				spend_time += temp - clock;
 			}
 			clock = temp;
 			clock + temp_sp;
-
-
 		}
+		
 		if (clock >= 24) {
 			dat++;
 			clock = clock - 24;
-			
 		}
 		printf("\t\t\t\t\t12월 %d일 %d시 정각 도착\n", dat, clock);
-
 	}
 	printf("\n\n\t\t\t\t\t-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n\n");
 	printf("\t\t\t\t\t%c 출발: 12월 %d일 %d시\n\n", trav[len] + 'a', sdat, sclock);
@@ -356,9 +310,9 @@ void make_ADJlist() {
 	char random_path[100][3];
 
 	for (int i = 0; i < 100; i++) {
-		random_path[i][0] = (rand() % 26) + 'a'; // 0은 출발
-		random_path[i][1] = (rand() % 26) + 'a'; // 1은 도착
-		random_path[i][2] = (rand() % 24); //출발 시간
+		random_path[i][0] = (rand() % 26) + 'a';
+		random_path[i][1] = (rand() % 26) + 'a';
+		random_path[i][2] = (rand() % 24);
 		if ((random_path[i][0] == random_path[i][1]) || pathCheck(random_path, i)) {
 			i--;
 			continue;
@@ -370,6 +324,5 @@ void make_ADJlist() {
 		char dest = random_path[i][1];
 		int times = random_path[i][2];
 		insertNode(start, dest, times);
-
 	}
 }

@@ -53,13 +53,13 @@ int main() {
 
 			int reserve_number;
 			int temp_date_check = 0;
-			char airport;
+			char station;
 			char arrive;
 			int flight_day = 0;
 
 			for (int j = 0; j < 2; j++) {
 				if (j == 0) {
-					//비행 정보 출력 
+					//기차 정보 출력 
 					source_name();  //출발지 
 					printf("\t\t\t\t\t-> ");
 					scanf("  %c", &reservation[reserve_check_number].source);
@@ -72,7 +72,7 @@ int main() {
 								break;
 						}
 					}
-					airport = reservation[reserve_check_number].source;
+					station = reservation[reserve_check_number].source;
 					printf("\n");
 
 					squre_box_print(); //출발 날짜 box
@@ -118,14 +118,14 @@ int main() {
 						reservation[reserve_check_number].date = temp_date_check;
 						flight_day = reservation[reserve_check_number].date;
 
-						PrintListTime(airport, flight_day);
+						PrintListTime(station, flight_day);
 					}
 
 				}
 
 				else {
 					destination_name();  //도착지 
-					PrintList(airport);
+					PrintList(station);
 					printf("\t\t\t\t\t-> ");
 					scanf(" %c", &reservation[reserve_check_number].destination);
 					if (!isalpha(reservation[reserve_check_number].destination)) {
@@ -143,20 +143,20 @@ int main() {
 				}
 			}
 
-			seat_print(t, airport, arrive);
+			seat_print(t, station, arrive);
 			printf(" \n\t\t\t\t\t -> 좌석을 선택해주세요! \n\n");
 			printf("\t\t\t\t\t -> ");
 			char seat[3];
 			scanf(" %s", &reservation[reserve_check_number].seat);
 			strcpy(seat, reservation[reserve_check_number].seat);
 
-			if(!(!seatCheck(t, airport, arrive, seat[0] - 'A', seat[1] - '0') && ((seat[0] >= 'A' && seat[0] <= 'J') && (seat[1] >= '0' && seat[1] <= '6')))){
+			if(!(!seatCheck(t, station, arrive, seat[0] - 'A', seat[1] - '0') && ((seat[0] >= 'A' && seat[0] <= 'J') && (seat[1] >= '0' && seat[1] <= '6')))){
 				do {
 					printf("\n\t\t\t\t\t 좌석을 다시 입력하세요!\n");
 					printf("\n\t\t\t\t\t-> ");
 					scanf(" %s", &reservation[reserve_check_number].seat);
 					strcpy(seat, reservation[reserve_check_number].seat);
-				} while (!(!seatCheck(t, airport, arrive, seat[0] - 'A', seat[1] - '0') && ((seat[0] >= 'A' && seat[0] <= 'J') && (seat[1] >= '0' && seat[1] <= '6'))));
+				} while (!(!seatCheck(t, station, arrive, seat[0] - 'A', seat[1] - '0') && ((seat[0] >= 'A' && seat[0] <= 'J') && (seat[1] >= '0' && seat[1] <= '6'))));
 			}
 
 			printf("\n");
@@ -290,10 +290,10 @@ int main() {
 				}
 				printf("\t\t\t\t\t┃ ");
 				int pathnum = shortest_path(reservation[check].source, reservation[check].destination, reservation[check].date);
-				printf("비행시간  : %d ", pathnum);
-				if (reservation[check].date >= 10)
+				printf("기차시간  : %d ", pathnum);
+				if (reservation[check].date > 10)
 					printf("            ┃ \n");
-				else if (reservation[check].date < 10)
+				else if (reservation[check].date <= 10)
 					printf("             ┃ \n");
 				printf("\t\t\t\t\t┗");  //세번 째 줄
 				for (int i = 0; i < 28; i++) printf("━");
