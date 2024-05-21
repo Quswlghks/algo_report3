@@ -20,7 +20,9 @@ void random_City_Position(City* city) {
 		city[i].name = i + 'a';
 		city[i].pos_x = rand() % 2001 - 1000;
 		city[i].pos_y = rand() % 2001 - 1000;
-	}
+
+		printf("%c의 좌표 : (%d, %d)\n", city[i].name, city[i].pos_x, city[i].pos_y);
+	} printf("\n");
 }
 
 void insertNode(char start, char dest, int times) {
